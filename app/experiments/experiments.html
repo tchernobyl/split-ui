@@ -1,0 +1,112 @@
+<div class="container">
+    <div class="page-header">
+        <h1>Experiment A</h1>
+    </div>
+
+
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div ng-class='{"box box-success":!!bestOne.Zscore ,"box box-danger":!bestOne.Zscore}'>
+                <div class="box-header with-border">
+
+
+                    <div ng-if="bestOne.Zscore">
+                        There is only a {{bestOne.Confidence}}% chance that {{bestOne.Treatment}} has a higher
+                        conversion rate.
+
+                    </div>
+                    <div ng-if="!bestOne.Zscore">
+                        There is no chance that one of Treatments has a higher conversion rate .
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="col-sm-12">
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-sort-numeric-desc"></i>Calculations</h3>
+
+                    <div class="box-tools pull-right">
+
+
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+
+                            <td>Control</td>
+                            <td>Treatment</td>
+                            <td>Visitors</td>
+                            <td>Conversions</td>
+                            <td>ConversionRate</td>
+                            <td>Zscore</td>
+                            <td>Confidence</td>
+                            <td>Improvement</td>
+                            <td>SampleSize</td>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="data in dataCalculated.experiments" ng-class='{success:data.Zscore==bestZ_score}'
+                            ng-click="updateCalculatedData($index)">
+
+                            <td><i ng-if="data.Baseline" class="fa-turkish-lira"></i></td>
+                            <td ng-bind="data.Treatment"></td>
+                            <td ng-bind="data.Visitors"></td>
+                            <td ng-bind="data.Conversions"></td>
+                            <td ng-bind="data.ConversionRate + '%'"></td>
+                            <td ng-bind="data.Zscore"></td>
+                            <td ng-bind="data.Confidence+ '%'"></td>
+                            <td ng-bind="data.Improvement+ '%'"></td>
+                            <td ng-bind="data.SampleSize"></td>
+
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="col-sm-12">
+
+            <div class='box box-primary'>
+                <div class="box-header with-border">
+
+                    <highchart id="chart1" config="hig2hcharts"></highchart>
+
+                </div>
+
+
+            </div>
+
+        </div>
+        <div class="col-sm-12">
+
+            <div class='box box-primary'>
+                <div class="box-header with-border">
+
+                    <highchart id="chart1" config="hig1hcharts"></highchart>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
