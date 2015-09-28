@@ -1,9 +1,10 @@
 <?php
 
 include 'calculate.php';
-//print_r(getProbabilityCenterOfTreatment(10,6,5));echo "<br>";
+//print_r(getProbabilityCenterOfTreatment(400,150,150));echo "<br>";
 //print_r(getProbabilityCenterOfTreatment(10,6,6));echo "<br>";
-//print_r(getProbabilityCenterOfTreatment(10,6,7));
+//print_r(getProbabilityCenterOfTreatment(10,6,7));echo "<br>";
+//print_r(getProbabilityCenterOfTreatment2(999900,805502,805502));
 //echo "<br>---------------------------------------<br>";
 
 
@@ -165,62 +166,7 @@ if (!empty($errors)) {
     $data['success'] = true;
     $data['message'] = 'Success!';
 }
-function getProbabilityCenterOfTreatment($Visitors, $Conversions, $Conversions1)
-{
 
-    $pro = $Conversions / $Visitors;
-    $pro1 = $Conversions1 / $Visitors;
-
-
-    $pa1 = fact($Visitors);
-    $pa2 = fact($Visitors - $Conversions1) * fact($Conversions1);
-
-    $cardinal = gmp_div_q($pa1, $pa2);
-//    echo $pa1."<br>";
-//    echo $pa2."<br>";
-//    echo $cardinal."<br>";exit;
-
-
-//
-//    echo'<br>pro--> :'.$pro;
-//    echo'<br>Conversions1--> :'.$Conversions1;
-    $f_part1 = pow($pro, $Conversions1);
-//    echo'<br>f_part1--> :'.$f_part1;
-//    echo'<br>1-pro--> :'. (1-$pro);
-//    echo'<br>$Visitors-$Conversions1--> :'. ($Visitors-$Conversions1);
-    $f_part2 = pow((1 - $pro), ($Visitors - $Conversions1));
-
-//    echo'<br>f_part2--> :'.$f_part2;
-////    echo $f_part1 . "<br>";
-////    echo $f_part2 . "<br>";;
-//    exit;
-
-
-    $prt1_multiplied_part2 = floatval(floatval($f_part1) * floatval($f_part2));
-
-    $result = floatval(floatval($prt1_multiplied_part2) * floatval($cardinal));
-    return array($pro1, floatval($result));
-
-}
-
-function fact($x)
-{
-    $return = 1;
-    for ($i = 2; $i <= $x; $i++) {
-        $return = gmp_mul($return, $i);
-    }
-    return $return;
-}
-
-
-function bcfact($n)
-{
-    $factorial = $n;
-    while (--$n > 1) {
-        $factorial = bcmul($factorial, $n);
-    }
-    return $factorial;
-}
 
 // return all our data to an AJAX call
 echo json_encode($data);
