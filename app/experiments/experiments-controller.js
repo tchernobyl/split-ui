@@ -114,29 +114,9 @@ angular.module('experiments')
                 $scope.dataCalculated = {};
                 $scope.bestZ_score = null;
 
-                var treatments = {
-                    "treatment": [
-                        "variantA",
-                        "variantB",
-                        "variantC",
-                        "variantD"
-                    ],
-                    "visitors": [
-                        "400",
-                        "722",
-                        "1033",
-                        "140000000"
-                    ],
-                    "conversions": [
-                        "150",
-                        "280",
-                        "390",
-                        "135000000"
-                    ],
-                    "baseline": [
-                        "1"
-                    ]
-                };
+
+                $scope.treatments = funnels[0].experiments[0];
+                console.log($scope.treatments.name)
                 $scope.bestOne = null;
 
 
@@ -145,8 +125,8 @@ angular.module('experiments')
                     getData();
                 };
                 $scope.updateCalculatedData = function ($index) {
-                    treatments.baseline = [$index];
-                    req.data = getAsUriParameters(treatments);
+                    $scope.treatments.baseline = [$index];
+                    req.data = getAsUriParameters($scope.treatments);
                     getData();
                 };
 
@@ -159,7 +139,7 @@ angular.module('experiments')
                         'Content-Type': 'application/x-www-form-urlencoded'
 
                     },
-                    data: getAsUriParameters(treatments)
+                    data: getAsUriParameters($scope.treatments)
                 };
 
                 function getAsUriParameters(data) {
@@ -213,9 +193,7 @@ angular.module('experiments')
                 }
 
                 function cardinal(num_trial, num_success) {
-                    var result = factorial(num_trial) / (factorial(num_trial - num_success) * factorial(num_success));
-
-                    return result;
+                    return factorial(num_trial) / (factorial(num_trial - num_success) * factorial(num_success));
 
 
                 }
