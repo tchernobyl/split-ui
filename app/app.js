@@ -10,6 +10,7 @@ angular.module('app',
             'highcharts-ng',
 
 
+            'dashboard',
             'experiments',
             'funnels'
 

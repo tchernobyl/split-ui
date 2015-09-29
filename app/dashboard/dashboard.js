@@ -7,6 +7,12 @@ angular.module('dashboard', [])
         }).state('dashboard.index', {
                 url: '',
                 templateUrl: 'dashboard/dashboard.html',
+                resolve: {
+                    _funnels: [function () {
+                        return funnels;
+                    }
+                    ]
+                },
                 controller: 'DashboardController'
             });
     }]);

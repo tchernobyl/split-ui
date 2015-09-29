@@ -1,7 +1,7 @@
 angular.module('experiments')
     .controller('ExperimentsController',
-        ['$scope', '$rootScope', '$http', 'highchartsNG',
-            function ($scope, $rootScope, $http, highchartsNG) {
+        ['$scope', '$rootScope', '$http', '_treatment', '_funnel',
+            function ($scope, $rootScope, $http, _treatment, _funnel) {
 
 
                 $scope.hig1hcharts = {
@@ -111,13 +111,11 @@ angular.module('experiments')
                 };
 
 
-                $scope.dataCalculated = {};
-                $scope.bestZ_score = null;
-
-
-                $scope.treatments = funnels[0].experiments[0];
-                console.log($scope.treatments.name)
-                $scope.bestOne = null;
+                $scope.treatments = _treatment;
+                $scope.funnel = _funnel;
+                $scope.treatments.dataCalculated = {};
+                $scope.treatments.bestZ_score = null;
+                $scope.treatments.bestOne = null;
 
 
                 $scope.start = function () {
@@ -157,14 +155,14 @@ angular.module('experiments')
 
                 getData();
                 function getData() {
-                    $scope.bestZ_score = null;
-                    $scope.bestOne = {};
+                    $scope.treatments.bestZ_score = null;
+                    $scope.treatments.bestOne = {};
                     $http(req).then(function (res) {
-                        $scope.dataCalculated = res.data;
+                        $scope.treatments.dataCalculated = res.data;
                         $scope.hig2hcharts.xAxis.categories = [];
                         $scope.hig2hcharts.series[0].data = [];
-                        for (var j = 0; j < $scope.dataCalculated.experiments.length; j++) {
-                            var xp = $scope.dataCalculated.experiments[j];
+                        for (var j = 0; j < $scope.treatments.dataCalculated.experiments.length; j++) {
+                            var xp = $scope.treatments.dataCalculated.experiments[j];
                             var experiment = new Abba.Experiment(3, 40, 150, 0.05);
                             var results = experiment.getResults(parseInt(xp.Conversions), parseInt(xp.Visitors));
 
@@ -175,7 +173,7 @@ angular.module('experiments')
                         }
 
 
-                        calculateTehBestOne($scope.dataCalculated.experiments);
+                        calculateTehBestOne($scope.treatments.dataCalculated.experiments);
 
                     }, function (res) {
 
@@ -218,13 +216,13 @@ angular.module('experiments')
 
                     for (var $i = 0; $i < experiments.length; $i++) {
                         if (experiments[$i].Zscore > 0) {
-                            if ($scope.bestZ_score == null) {
-                                $scope.bestZ_score = experiments[$i].Zscore;
-                                $scope.bestOne = experiments[$i];
+                            if ($scope.treatments.bestZ_score == null) {
+                                $scope.treatments.bestZ_score = experiments[$i].Zscore;
+                                $scope.treatments.bestOne = experiments[$i];
                             } else {
-                                if (experiments[$i].Zscore > $scope.bestZ_score) {
-                                    $scope.bestZ_score = experiments[$i].Zscore;
-                                    $scope.bestOne = experiments[$i];
+                                if (experiments[$i].Zscore > $scope.treatments.bestZ_score) {
+                                    $scope.treatments.bestZ_score = experiments[$i].Zscore;
+                                    $scope.treatments.bestOne = experiments[$i];
                                 }
                             }
 

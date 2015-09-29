@@ -1,6 +1,6 @@
 <div class="container">
     <div class="page-header">
-        <h1>{{treatments.name}} </h1>
+        <h1><a ui-sref="funnels.index({id:funnel.id-1})">{{funnel.name}} :</a>{{treatments.name}} </h1>
     </div>
 
 
@@ -8,16 +8,17 @@
 
         <div class="col-sm-12">
 
-            <div ng-class='{"box box-success":!!bestOne.Zscore ,"box box-danger":!bestOne.Zscore}'>
+            <div ng-class='{"box box-success":!!treatments.bestOne.Zscore ,"box box-danger":!treatments.bestOne.Zscore}'>
                 <div class="box-header with-border">
 
 
-                    <div ng-if="bestOne.Zscore">
-                        There is only a {{bestOne.Confidence}}% chance that {{bestOne.Treatment}} has a higher
+                    <div ng-if="treatments.bestOne.Zscore">
+                        There is only a {{treatments.bestOne.Confidence}}% chance that {{treatments.bestOne.Treatment}}
+                        has a higher
                         conversion rate.
 
                     </div>
-                    <div ng-if="!bestOne.Zscore">
+                    <div ng-if="!treatments.bestOne.Zscore">
                         There is no chance that one of Treatments has a higher conversion rate .
 
                     </div>
@@ -56,7 +57,8 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="data in dataCalculated.experiments" ng-class='{success:data.Zscore==bestZ_score}'
+                        <tr ng-repeat="data in treatments.dataCalculated.experiments"
+                            ng-class='{success:data.Zscore==treatments.bestZ_score}'
                             ng-click="updateCalculatedData($index)">
 
                             <td><i ng-if="data.Baseline" class="fa-turkish-lira"></i></td>

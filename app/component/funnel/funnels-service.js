@@ -1,39 +1,47 @@
 angular.module('funnels')
-    .controller('FunnelsController',
-        ['$scope', '$rootScope', '$http', 'highchartsNG', '_funnel',
-            function ($scope, $rootScope, $http, highchartsNG, _funnel) {
+    .factory('FunnelsStatistics',
+        [  '$http',
+            function ($http) {
 
 
-                var funnel = _funnel;
-                console.log(_funnel)
+                var funnel = funnels[0];
                 var funnelsStatistics = {};
-                $scope.end = false;
-                funnelsStatistics.getFunnel = getRe();
 
-                function getRe() {
+                funnelsStatistics.getFunnel = getRe(function () {
+                    console.log(2);
+                });
+
+                function getRe(f) {
+
                     for (var i = 0; i < funnel.experiments.length; i++) {
+                        console.log(1);
                         var j = angular.copy(i);
-                        $scope.end = (j + 1 == funnel.experiments.length);
+                        var end = j + 1 == funnel.experiments.length;
                         var experiment = funnel.experiments[i];
-                        getData(experiment);
+                        getData(experiment, end);
+
                     }
+
+                    f();
+
                 }
 
-                $scope.updateCalculatedData = function ($index, treatment) {
 
-                    treatment.baseline = [$index];
-                    getData(treatment);
-                };
+                function getData(treatment, end) {
 
-                function getData(treatment) {
 
                     treatment.bestZ_score = null;
                     treatment.bestOne = {};
                     $http(getRequest(treatment)).then(function (res) {
                         treatment.dataCalculated = res.data;
-
                         calculateTehBestOne(treatment);
-                        $scope.funnel = funnel;
+                        if (end) {
+
+
+                            return funnel;
+                        } else {
+                            console.log(5);
+                        }
                     }, function (res) {
 
                     });
@@ -85,5 +93,6 @@ angular.module('funnels')
                     };
                 }
 
+                return funnelsStatistics;
 
             }]);
