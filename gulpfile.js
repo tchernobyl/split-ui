@@ -69,7 +69,18 @@ gulp.task('usemin', function () {
 gulp.task('statLibs', function () {
     gulp.src('app/stat/file.js')
         .pipe(gulp.dest(config.path.build + '/stat'));
+    gulp.src('app/stat/jstat-min-08fb5e8.js')
+        .pipe(gulp.dest(config.path.build + '/stat'));
 
+
+});
+gulp.task('data', function () {
+    gulp.src('data/funnels.js')
+        .pipe(gulp.dest(config.path.build + '/data'));
+});
+gulp.task('phpServer', function () {
+    gulp.src('php-files/**')
+        .pipe(gulp.dest(config.path.build + '/php-files'));
 
 });
 
@@ -98,7 +109,7 @@ gulp.task('template', function () {
 
 gulp.task('build', function (callback) {
     runSequence('clean',
-        ['sass', 'template', 'fonts', 'images', 'statLibs'],
+        ['sass', 'template', 'fonts', 'images', 'statLibs', 'data', 'phpServer'],
         // uncomment if you want to use dummy data
 
         'usemin',

@@ -1,7 +1,7 @@
 angular.module('funnels')
     .controller('FunnelsController',
-        ['$scope', '$rootScope', '$http', 'highchartsNG', '_funnel',
-            function ($scope, $rootScope, $http, highchartsNG, _funnel) {
+        ['$scope', '$rootScope', '$http', 'highchartsNG', '_funnel', 'ServerStat',
+            function ($scope, $rootScope, $http, highchartsNG, _funnel, ServerStat) {
 
 
                 var funnel = _funnel;
@@ -75,7 +75,7 @@ angular.module('funnels')
                 function getRequest(treatment) {
                     return {
                         method: 'POST',
-                        url: '../php-files/process.php',
+                        url: ServerStat.url,
                         headers: {
 
                             'Content-Type': 'application/x-www-form-urlencoded'

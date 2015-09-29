@@ -20,6 +20,9 @@ angular.module('app',
     .constant('LAYOUTS', {
         default: 'components/templates/layouts/default.html'
     })
+    .constant('ServerStat', {
+        url: 'php-files/process.php'
+    })
 
 
     .config([

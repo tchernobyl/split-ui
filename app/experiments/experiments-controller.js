@@ -1,7 +1,7 @@
 angular.module('experiments')
     .controller('ExperimentsController',
-        ['$scope', '$rootScope', '$http', '_treatment', '_funnel',
-            function ($scope, $rootScope, $http, _treatment, _funnel) {
+        ['$scope', '$rootScope', '$http', '_treatment', '_funnel', 'ServerStat',
+            function ($scope, $rootScope, $http, _treatment, _funnel, ServerStat) {
 
 
                 $scope.hig1hcharts = {
@@ -131,7 +131,7 @@ angular.module('experiments')
 
                 var req = {
                     method: 'POST',
-                    url: '../php-files/process.php',
+                    url: ServerStat.url,
                     headers: {
 
                         'Content-Type': 'application/x-www-form-urlencoded'

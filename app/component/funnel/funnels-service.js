@@ -1,7 +1,7 @@
 angular.module('funnels')
     .factory('FunnelsStatistics',
-        [  '$http',
-            function ($http) {
+        [  '$http', 'ServerStat',
+            function ($http, ServerStat) {
 
 
                 var funnel = funnels[0];
@@ -83,7 +83,7 @@ angular.module('funnels')
                 function getRequest(treatment) {
                     return {
                         method: 'POST',
-                        url: '../php-files/process.php',
+                        url: ServerStat.url,
                         headers: {
 
                             'Content-Type': 'application/x-www-form-urlencoded'
