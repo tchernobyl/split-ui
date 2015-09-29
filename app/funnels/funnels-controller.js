@@ -5,18 +5,27 @@ angular.module('funnels')
 
 
                 var funnel = _funnel;
-                console.log(_funnel)
+                funnel.numberPath = 0;
+
                 var funnelsStatistics = {};
                 $scope.end = false;
                 funnelsStatistics.getFunnel = getRe();
 
                 function getRe() {
+
                     for (var i = 0; i < funnel.experiments.length; i++) {
+                        if (funnel.numberPath == 0) {
+
+                            funnel.numberPath = funnel.experiments[i].conversions.length;
+                        } else {
+                            funnel.numberPath = funnel.numberPath * funnel.experiments[i].conversions.length;
+                        }
                         var j = angular.copy(i);
                         $scope.end = (j + 1 == funnel.experiments.length);
                         var experiment = funnel.experiments[i];
                         getData(experiment);
                     }
+
                 }
 
                 $scope.updateCalculatedData = function ($index, treatment) {
@@ -40,7 +49,7 @@ angular.module('funnels')
                 }
 
                 function calculateTehBestOne(treatment) {
-
+                    treatment.bestOne = treatment.dataCalculated.experiments[treatment.baseline[0]];
                     for (var $i = 0; $i < treatment.dataCalculated.experiments.length; $i++) {
                         if (treatment.dataCalculated.experiments[$i].Zscore > 0) {
                             if (treatment.bestZ_score == null) {
@@ -56,7 +65,15 @@ angular.module('funnels')
 
                         }
 
+
                     }
+
+                    if (!treatment.bestOne) {
+
+                    } else {
+
+                    }
+
                 }
 
                 function getAsUriParameters(data) {

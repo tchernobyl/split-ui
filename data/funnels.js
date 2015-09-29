@@ -35,23 +35,26 @@ var funnels = [
                 "treatment": [
                     "variantA",
                     "variantB",
-                    "variantC"
+                    "variantC",
+                    "variantR"
 
                 ],
                 "visitors": [
                     "400",
                     "722",
-                    "1033"
+                    "1033",
+                    "833"
 
                 ],
                 "conversions": [
                     "150",
                     "280",
-                    "390"
+                    "390",
+                    "230"
 
                 ],
                 "baseline": [
-                    "2"
+                    "1"
                 ]
             },
             {
