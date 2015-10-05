@@ -18,15 +18,15 @@
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div ng-class='{"box box-success":!!treatment.bestOne.Zscore ,"box box-danger":!treatment.bestOne.Zscore}'>
+                                            <div ng-class='{"box box-success":!!treatment.bestOne.Zscore && treatment.bestOne.Zscore !="-" ,"box box-danger": treatment.bestOne.Zscore =="-"}'>
                                                 <div class="box-header with-border">
-                                                    <div ng-if="treatment.bestOne.Zscore">
+                                                    <div ng-if='treatment.bestOne.Zscore && treatment.bestOne.Zscore !="-"'>
                                                         There is only a {{treatment.bestOne.Confidence}}% chance that
                                                         {{treatment.bestOne.Treatment}} has a higher
                                                         conversion rate.
 
                                                     </div>
-                                                    <div ng-if="!treatment.bestOne.Zscore">
+                                                    <div ng-if='treatment.bestOne.Zscore =="-"'>
                                                         There is no chance that one of Treatments has a higher
                                                         conversion rate .
 
