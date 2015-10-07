@@ -10,6 +10,7 @@ angular.module('app',
             'highcharts-ng',
 
 
+            'percentage-filter',
             'dashboard',
             'experiments',
             'funnels',

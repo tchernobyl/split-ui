@@ -18,12 +18,118 @@
                 </div>
                 <div class="table-responsive mailbox-messages">
                     <table class="table table-hover">
-                        <tr ng-repeat="path in allpaths.allPaths">
+                        <thead>
+                        <tr>
+                            <td>ID</td>
+                            <td ng-repeat="step in funnel.steps">{{step.name}}</td>
+                            <td>Success(%)</td>
+                            <td>Failed(%)</td>
+                        </tr>
+                        </thead>
+                        <tr ng-click="getPathStatistics($index)" ng-repeat="path in allpaths.allPaths">
+                            <td>{{path.id }}</td>
                             <td ng-repeat="funnel in path.funnel"><code>{{funnel.id}}</code>{{funnel.name}}</td>
+                            <td>{{path.successRate| percentage}}</td>
+                            <td>{{path.failedRate |percentage}}</td>
                         </tr>
                     </table>
                 </div>
             </div>
+        </div>
+
+
+        <div class="col-sm-12" ng-if=PathSelected>
+            <div class='box box-primary'>
+                <div class="box-header with-border">
+
+                    <ol class="breadcrumb">
+                        <li ng-repeat="funnel in PathSelected.funnel" ng-click="getStatisticsStep($index)">
+                            <a class="ng-binding">
+                                <i class="glyphicon glyphicon-star-empty"></i>
+                                {{funnel.name}}
+                            </a>
+                        </li>
+                    </ol>
+                    <div class="box-tools pull-right">
+                        <small class="label label-info ng-binding"><i class="fa fa-clock-o"></i> EL-W506X
+                        </small>
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <ul class="todo-list">
+
+                                <li>
+                                        <span class="handle ui-sortable-handle">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span>
+                                    <span class="text">Total Visit:</span>
+                                    <span class="text pull-right ng-binding">
+                                        {{PathSelected.total}}</span>
+
+                                </li>
+                                <li>
+                                        <span class="handle ui-sortable-handle">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span>
+                                    <span class="text">Success:</span>
+                                    <span class="text pull-right ng-binding">
+                                        {{PathSelected.successRate|percentage}}</span>
+
+                                </li>
+                                <li>
+                                        <span class="handle ui-sortable-handle">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span>
+                                    <span class="text">Failed:</span>
+                                    <span class="text pull-right ng-binding">
+                                        {{PathSelected.failedRate|percentage}}</span>
+
+                                </li>
+                                <li>
+                                        <span class="handle ui-sortable-handle">
+                                            <i class="fa fa-ellipsis-v"></i>
+                                            <i class="fa fa-ellipsis-v"></i>
+                                        </span>
+                                    <span class="text">Total paid:</span>
+                                    <span class="text pull-right ng-binding">
+
+                                        {{getTotalPaidAmount(PathSelected.successRate,PathSelected.total ,funnel.orderAmount)|currency}}
+                                      </span>
+
+                                </li>
+
+
+                            </ul>
+                        </div>
+
+                        <div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-12">
+
+            <div class='box box-primary'>
+                <div class="box-header with-border">
+
+                    <highchart id="chart1" config="highcharts"></highchart>
+
+                </div>
+
+
+            </div>
+
         </div>
     </div>
 
