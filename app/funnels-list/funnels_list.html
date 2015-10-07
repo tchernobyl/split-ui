@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="page-header">
+        <h1>{{funnel.name}} </h1>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-sort-numeric-desc"></i>All possible paths </h3>
+
+                    <div class="box-tools pull-right">
+
+
+                    </div>
+                </div>
+                <div class="table-responsive mailbox-messages">
+                    <table class="table table-hover">
+                        <tr ng-repeat="path in allpaths.allPaths">
+                            <td ng-repeat="funnel in path.funnel"><code>{{funnel.id}}</code>{{funnel.name}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-sm-9">
+
+
+    </div>
+
+</div>

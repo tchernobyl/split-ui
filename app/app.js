@@ -12,7 +12,8 @@ angular.module('app',
 
             'dashboard',
             'experiments',
-            'funnels'
+            'funnels',
+            'funnels_list'
 
         ])
 
@@ -21,7 +22,7 @@ angular.module('app',
         default: 'components/templates/layouts/default.html'
     })
     .constant('ServerStat', {
-        url: 'php-files/process.php'
+        url: '../php-files/process.php'
     })
 
 
