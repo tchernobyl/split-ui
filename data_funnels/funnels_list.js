@@ -3,6 +3,7 @@ var funnels_list =
         {
             id: 1,
             name: 'funnel_1',
+            orderAmount: 400,
             steps: [
                 {
                     id: 1,
@@ -49,6 +50,7 @@ var funnels_list =
         {
             id: 2,
             name: 'funnel_2',
+            orderAmount: 250,
             steps: [
                 {
                     id: 1,
@@ -104,6 +106,7 @@ var funnels_list =
         {
             id: 3,
             name: 'funnel_3',
+            orderAmount: 235,
             steps: [
                 {
                     id: 1,
@@ -170,6 +173,7 @@ var funnels_list =
         {
             id: 4,
             name: 'funnel_4',
+            orderAmount: 129.5,
             steps: [
                 {
                     id: 1,
@@ -233,52 +237,52 @@ var funnels_list =
                 },
 
 
-                {
-                    id: 5,
-                    name: 'f4_step_5',
-                    experiences: [
-                        {
-                            id: 1,
-                            name: 'f4_s5_experience_1'
-                        },
-                        {
-                            id: 2,
-                            name: 'f4_s5_experience_2'
-                        },
-                        {
-                            id: 3,
-                            name: 'f4_s5_experience_3'
-                        }
-                    ]
-                },
-                {
-                    id: 6,
-                    name: 'f4_step_6',
-                    experiences: [
-                        {
-                            id: 1,
-                            name: 'f4_s6_experience_1'
-                        },
-                        {
-                            id: 2,
-                            name: 'f4_s6_experience_2'
-                        }
-                    ]
-                },
-                {
-                    id: 7,
-                    name: 'f4_step_7',
-                    experiences: [
-                        {
-                            id: 1,
-                            name: 'f4_s7_experience_1'
-                        },
-                        {
-                            id: 2,
-                            name: 'f4_s7_experience_2'
-                        }
-                    ]
-                }
+//                {
+//                    id: 5,
+//                    name: 'f4_step_5',
+//                    experiences: [
+//                        {
+//                            id: 1,
+//                            name: 'f4_s5_experience_1'
+//                        },
+//                        {
+//                            id: 2,
+//                            name: 'f4_s5_experience_2'
+//                        },
+//                        {
+//                            id: 3,
+//                            name: 'f4_s5_experience_3'
+//                        }
+//                    ]
+//                },
+//                {
+//                    id: 6,
+//                    name: 'f4_step_6',
+//                    experiences: [
+//                        {
+//                            id: 1,
+//                            name: 'f4_s6_experience_1'
+//                        },
+//                        {
+//                            id: 2,
+//                            name: 'f4_s6_experience_2'
+//                        }
+//                    ]
+//                },
+//                {
+//                    id: 7,
+//                    name: 'f4_step_7',
+//                    experiences: [
+//                        {
+//                            id: 1,
+//                            name: 'f4_s7_experience_1'
+//                        },
+//                        {
+//                            id: 2,
+//                            name: 'f4_s7_experience_2'
+//                        }
+//                    ]
+//                }
             ]
         }
     ];

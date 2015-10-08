@@ -4,6 +4,18 @@ angular.module('funnels_list')
             function ($scope, $rootScope, $http, _funnel) {
 
 
+                $scope.goalOptions = {
+                    optionsSearch: ['successRate', 'totalPaidAmount'],
+                    optionSelected: 'successRate'
+                };
+                $scope.listPaths = {
+                    page: 1,
+                    start: 0,
+                    length: 14,
+                    totalPage: 0
+                };
+
+
                 $scope.funnel = _funnel;
                 $scope.diagramConfig = {
                     maxFunnels: 10,
@@ -20,7 +32,7 @@ angular.module('funnels_list')
                             x: -20 //center
                         },
                         subtitle: {
-                            text: 'Source: WorldClimate.com',
+                            text: 'BlitzBrands',
                             x: -20
                         }
                     },
@@ -52,6 +64,15 @@ angular.module('funnels_list')
                     series: [],
                     seriesS: [],
                     seriesF: []
+                };
+
+
+                $scope.selectOptions = function () {
+
+                    var arr = angular.copy($scope.allpaths)
+                    $scope.allpaths = [];
+
+                    reformatPathsBy($scope.goalOptions.optionSelected, arr)
                 };
                 $scope.funnel.pathNumber = 0;
 
@@ -109,7 +130,8 @@ angular.module('funnels_list')
                         } else {
 
 //                            reformatPathsBy("successRate",ary);
-                            reformatPathsBy("failedRate", ary);
+//                            reformatPathsBy("failedRate", ary);
+                            reformatPathsBy($scope.goalOptions.optionSelected, ary);
                             return;
                         }
                         result = getObjectFromArray(posArray, result);
@@ -119,9 +141,11 @@ angular.module('funnels_list')
 
                 function reformatPathsBy(field, ary) {
 
+
                     for (var i = 0; i < ary.allPaths.length; i++) {
                         for (var j = i + 1; j < ary.allPaths.length; j++) {
-                            if (ary.allPaths[i][field] > ary.allPaths[j][field]) {
+
+                            if (ary.allPaths[i][field] < ary.allPaths[j][field]) {
                                 var per = ary.allPaths[i];
                                 ary.allPaths[i] = ary.allPaths[j];
                                 ary.allPaths[j] = per;
@@ -131,36 +155,103 @@ angular.module('funnels_list')
                     }
                     $scope.allpaths = ary;
 
-//                    ary.allPaths.sort(function(a, b){
-//                        var keyA = a[field],
-//                            keyB = b[field];
-//                        console.log(666)
-//
-//
-//                        if(keyA < keyB) return -1;
-//                        if(keyA > keyB) return 1;
-//
-//                        return 0;
-//
-//                    });
-//
 
                 }
 
+                $scope.highcharts2 = {
+                    options: {
+                        chart: {
+                            type: 'bar'
+                        },
+                        title: {
+                            text: 'Stacked bar chart'
+                        },
+                        plotOptions: {
+                            series: {
+                                stacking: 'normal'
+                            }
+                        }
+                    },
+
+                    xAxis: {
+                        categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: 'Total fruit consumption'
+                        }
+                    },
+
+                    legend: {
+                        reversed: true
+                    },
+                    series: [
+                        {
+                            name: 'success',
+                            data: []
+
+                        },
+                        {
+                            name: 'failed',
+                            data: []
+                        }
+                    ]
+                };
+                function calculateSeries(object) {
+                    $scope.highcharts2.xAxis.categories = [];
+                    $scope.highcharts2.series[0].data = [];
+                    $scope.highcharts2.series[1].data = [];
+                    for (var i = 0; i < object.funnel.length; i++) {
+                        $scope.highcharts2.xAxis.categories.push(object.funnel[i].name);
+                        $scope.highcharts2.series[0].data.push(object.funnel[i].success);
+                        $scope.highcharts2.series[1].data.push(object.funnel[i].failer);
+                    }
+
+
+                }
+
+                function getPathStatistics($index) {
+                    $scope.PathSelected = $scope.allpaths.allPaths[$index];
+                    $scope.PathSelected.rank = $index;
+                    $scope.stepSelected = $scope.PathSelected.funnel[0];
+                    calculateSeries($scope.PathSelected);
+                }
 
                 $scope.getPathStatistics = function ($index) {
-                    $scope.PathSelected = $scope.allpaths.allPaths[$index];
-                    $scope.stepSelected = $scope.PathSelected.funnel[0];
-
+                    getPathStatistics($index)
 
                 };
                 $scope.getStatisticsStep = function ($index) {
                     $scope.stepSelected = $scope.PathSelected.funnel[$index]
-                    console.log($scope.stepSelected)
+
+
                 };
                 $scope.getTotalPaidAmount = function (n, m, b) {
 
                     return Math.round(n * m) * b;
+                };
+                $scope.getTotalFunnelSuccessFailed = function (n, m) {
+
+                    return Math.round(n * m);
+                };
+//                $scope.listPaths={
+//                    page:0,
+//                    start:0,
+//                    length:14,
+//                    totalPage:0
+//                };
+                $scope.changePage = function () {
+
+                    $scope.listPaths.start = ($scope.listPaths.page - 1) * $scope.listPaths.length;
+
+                    console.log($scope.listPaths.start)
+
+
+                };
+                $scope.getTotalPage = function () {
+                    return $scope.listPaths.totalPage = Math.ceil($scope.allpaths.allPaths.length / $scope.listPaths.length);
+
                 };
                 function getObjectFromArray(array, object) {
 
@@ -207,7 +298,7 @@ angular.module('funnels_list')
                         path.funnel[t].total = total;
                         path.funnel[t].successRate = success / total;
                         path.funnel[t].failerRate = failed / total;
-                        path.failedRate = 1 - path.successRate;
+
                         if (path.failedRateProduct === null) {
                             path.failedRateProduct = path.funnel[t].failerRate;
                         } else {
@@ -218,7 +309,8 @@ angular.module('funnels_list')
                         } else {
                             path.successRate = path.successRate * path.funnel[t].successRate;
                         }
-
+                        path.failedRate = 1 - path.successRate;
+                        path.totalPaidAmount = Math.round(path.successRate * path.total) * $scope.funnel.orderAmount;
                         series_s.data.push(path.funnel[t].successRate);
                         series_f.data.push(path.funnel[t].failerRate);
 
@@ -242,9 +334,8 @@ angular.module('funnels_list')
                 }
 
                 function getRandomArbitrary(min, max) {
-                    var value = Math.round(Math.random() * (max - min) + min)
 
-                    return value;
+                    return Math.round(Math.random() * (max - min) + min);
                 }
 
 
