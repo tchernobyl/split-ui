@@ -1,205 +1,245 @@
 <div class="container">
 <div class="page-header">
-    <h1>{{funnel.name}} </h1>
 
+    <div class="row">
+        <div class="col-sm-10">
+
+            <div class="box box-success">
+                <div class="box-header with-border">
+
+
+                    <h3>{{funnel.name}} </h3>
+
+
+                </div>
+                <div class="table-responsive mailbox-messages">
+                    <table class="table table-hover table-striped">
+                        <tr ng-repeat="step in funnel.steps">
+                            <td><a>{{step.name}}</a>
+                            </td>
+                            <td>
+                                <text ng-repeat="exp in step.experiences">
+                                    <code> /</code>
+                                    {{exp.name}}
+                                </text>
+                            </td>
+                        </tr>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-sm-12">
+<div class="col-sm-10">
 
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <pagination ng-model="listPaths.page" ng-change="changePage()" total-items="allpaths.allPaths.length"
-                            items-per-page="listPaths.length"
-                            max-size="maxPageSize" boundary-links="displayPageBoundaryLinks"
-                            class="pull-right"></pagination>
-                <form name="paymentMethodForm" class="form-horizontal col-sm-6"
-                      novalidate>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Goal</label>
+    <div class="box box-primary">
+        <div class="box-header with-border">
 
-                        <div class="col-sm-10">
-                            <select ui-select2 name="gateway" ng-model="goalOptions.optionSelected" class="form-control"
-                                    ng-change="selectOptions()" required>
-                                <option value="totalPaidAmount">Amount</option>
-                                <option value="successRate">Success%</option>
+            <form name="paymentMethodForm" class="form-horizontal col-sm-6"
+                  novalidate>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Goal</label>
 
-                            </select>
+                    <div class="col-sm-10">
+                        <select ui-select2 name="gateway" ng-model="goalOptions.optionSelected" class="form-control"
+                                ng-change="selectOptions()" required>
+                            <option value="totalPaidAmount">Amount</option>
+                            <option value="successRate">Success%</option>
+
+                        </select>
 
 
-                        </div>
                     </div>
+                </div>
 
 
-                </form>
+            </form>
+        </div>
+    </div>
+</div>
+<!--</div>-->
+
+
+<!--<div class="row">-->
+<div class="col-sm-10">
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">All possible paths </h3>
+
+            <div class="box-tools pull-right">
+                <small
+
+                        class="label label-info ng-binding">
+                    <i class="fa fa-sort-numeric-desc"></i> Total:{{allpaths.allPaths.length}}
+                </small>
             </div>
+
+            <div class="box-tools pull-right">
+
+
+            </div>
+        </div>
+        <div class="table-responsive mailbox-messages">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <td>ID</td>
+                    <td ng-repeat="step in funnel.steps">{{step.name}}</td>
+                    <td>Success(%)</td>
+                    <td>Amount</td>
+                </tr>
+                </thead>
+                <tr ng-click="getPathStatistics($index)"
+                    ng-class='{success:$index==0,info:$index==PathSelected.rank&&PathSelected.rank!=0}'
+                    ng-repeat="path in allpaths.allPaths"
+                    ng-if="$index>=listPaths.start&&$index<listPaths.start+listPaths.length">
+                    <td>{{path.id }}</td>
+                    <td ng-repeat="funnel in path.funnel"><code>{{funnel.id}}</code>{{funnel.name}}</td>
+                    <td>{{path.successRate| percentage}}</td>
+                    <td>{{path.totalPaidAmount |currency}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="box-footer" style="display: block;">
+            <div class="row">
+                <div class="col-sm-12 ">
+                    <pagination ng-model="listPaths.page" ng-change="changePage()"
+                                total-items="allpaths.allPaths.length"
+                                items-per-page="listPaths.length"
+                                max-size="maxPageSize" boundary-links="displayPageBoundaryLinks"
+                                class="pull-right"></pagination>
+                </div>
+
+            </div>
+
+
         </div>
     </div>
 </div>
 
 
-<div class="row">
-    <div class="col-sm-12">
+<div class="col-sm-10" ng-if=PathSelected>
+    <div class='box box-primary'>
+        <div class="box-header with-border">
 
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title"><i class="fa fa-sort-numeric-desc"></i>All possible paths{{getTotalPage()}} </h3>
+            <ol class="breadcrumb">
+                <li ng-repeat="funnel in PathSelected.funnel" ng-click="getStatisticsStep($index)">
+                    <a class="ng-binding">
+                        <i class="glyphicon glyphicon-star-empty"></i>
+                        {{funnel.name}}
+                    </a>
+                </li>
+            </ol>
+            <div class="box-tools pull-right">
+                <small
 
-                <div class="box-tools pull-right">
-                    <small
-
-                            class="label label-info ng-binding">
-                        <i class="fa fa-clock-o"></i> Total:{{allpaths.allPaths.length}}
-                    </small>
-                </div>
-
-                <div class="box-tools pull-right">
-
-
-                </div>
-            </div>
-            <div class="table-responsive mailbox-messages">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <td>ID</td>
-                        <td ng-repeat="step in funnel.steps">{{step.name}}</td>
-                        <td>Success(%)</td>
-                        <td>Amount</td>
-                    </tr>
-                    </thead>
-                    <tr ng-click="getPathStatistics($index)"
-                        ng-class='{success:$index==0,info:$index==PathSelected.rank&&PathSelected.rank!=0}'
-                        ng-repeat="path in allpaths.allPaths"
-                        ng-if="$index>=listPaths.start&&$index<listPaths.start+listPaths.length">
-                        <td>{{path.id }}</td>
-                        <td ng-repeat="funnel in path.funnel"><code>{{funnel.id}}</code>{{funnel.name}}</td>
-                        <td>{{path.successRate| percentage}}</td>
-                        <td>{{path.totalPaidAmount |currency}}</td>
-                    </tr>
-                </table>
+                        ng-class='{"label label-info ng-binding":PathSelected.rank=="0","label label-danger ng-binding":PathSelected.rank!="0"}'>
+                    <i class="fa fa-clock-o"></i> Rank:{{PathSelected.rank+1}}
+                </small>
             </div>
         </div>
-    </div>
+        <div class="table-responsive mailbox-messages">
+            <div class="row">
+                <div class="col-sm-3">
+                    <ul class="todo-list">
 
-
-    <div class="col-sm-12" ng-if=PathSelected>
-        <div class='box box-primary'>
-            <div class="box-header with-border">
-
-                <ol class="breadcrumb">
-                    <li ng-repeat="funnel in PathSelected.funnel" ng-click="getStatisticsStep($index)">
-                        <a class="ng-binding">
-                            <i class="glyphicon glyphicon-star-empty"></i>
-                            {{funnel.name}}
-                        </a>
-                    </li>
-                </ol>
-                <div class="box-tools pull-right">
-                    <small
-
-                            ng-class='{"label label-info ng-binding":PathSelected.rank=="0","label label-danger ng-binding":PathSelected.rank!="0"}'>
-                        <i class="fa fa-clock-o"></i> Rank:{{PathSelected.rank+1}}
-                    </small>
-                </div>
-            </div>
-            <div class="table-responsive mailbox-messages">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <ul class="todo-list">
-
-                            <li>
+                        <li>
                                         <span class="handle ui-sortable-handle">
                                             <i class="fa fa-ellipsis-v"></i>
                                             <i class="fa fa-ellipsis-v"></i>
                                         </span>
-                                <span class="text">Total Visit:</span>
+                            <span class="text">Total Visit:</span>
                                     <span class="text pull-right ng-binding">
                                         {{PathSelected.total}}</span>
 
-                            </li>
-                            <li>
+                        </li>
+                        <li>
                                         <span class="handle ui-sortable-handle">
                                             <i class="fa fa-ellipsis-v"></i>
                                             <i class="fa fa-ellipsis-v"></i>
                                         </span>
-                                <span class="text">Success%:</span>
+                            <span class="text">Success%:</span>
                                     <span class="text pull-right ng-binding">
                                         {{PathSelected.successRate|percentage}}</span>
 
-                            </li>
-                            <li>
+                        </li>
+                        <li>
                                         <span class="handle ui-sortable-handle">
                                             <i class="fa fa-ellipsis-v"></i>
                                             <i class="fa fa-ellipsis-v"></i>
                                         </span>
-                                <span class="text">Success:</span>
+                            <span class="text">Success:</span>
                                     <span class="text pull-right ng-binding">
                                         {{getTotalFunnelSuccessFailed(PathSelected.successRate,PathSelected.total)}}</span>
 
-                            </li>
-                            <li>
+                        </li>
+                        <li>
                                         <span class="handle ui-sortable-handle">
                                             <i class="fa fa-ellipsis-v"></i>
                                             <i class="fa fa-ellipsis-v"></i>
                                         </span>
-                                <span class="text">Failed%:</span>
+                            <span class="text">Failed%:</span>
                                     <span class="text pull-right ng-binding">
                                         {{PathSelected.failedRate|percentage}}</span>
 
-                            </li>
-                            <li>
+                        </li>
+                        <li>
                                         <span class="handle ui-sortable-handle">
                                             <i class="fa fa-ellipsis-v"></i>
                                             <i class="fa fa-ellipsis-v"></i>
                                         </span>
-                                <span class="text">Failed:</span>
+                            <span class="text">Failed:</span>
                                     <span class="text pull-right ng-binding">
                                         {{getTotalFunnelSuccessFailed(PathSelected.failedRate,PathSelected.total)}}</span>
 
-                            </li>
-                            <li>
+                        </li>
+                        <li>
                                         <span class="handle ui-sortable-handle">
                                             <i class="fa fa-ellipsis-v"></i>
                                             <i class="fa fa-ellipsis-v"></i>
                                         </span>
-                                <span class="text">Total paid:</span>
+                            <span class="text">Total paid:</span>
                                     <span class="text pull-right ng-binding">
 
                                         {{getTotalPaidAmount(PathSelected.successRate,PathSelected.total ,funnel.orderAmount)|currency}}
                                       </span>
 
-                            </li>
+                        </li>
 
 
-                        </ul>
-                    </div>
+                    </ul>
+                </div>
 
 
-                    <div class="col-sm-9">
-                        <highchart id="chart2" config="highcharts2"></highchart>
-
-                    </div>
+                <div class="col-sm-9">
+                    <highchart id="chart2" config="highcharts2"></highchart>
 
                 </div>
+
             </div>
         </div>
     </div>
+</div>
 
 
-    <div class="col-sm-12">
+<div class="col-sm-10">
 
-        <div class='box box-primary'>
-            <div class="box-header with-border">
+    <div class='box box-primary'>
+        <div class="box-header with-border">
 
-                <highchart style="height:800px " id="chart1" config="highcharts"></highchart>
-
-            </div>
-
+            <highchart style="height:600px " id="chart1" config="highcharts"></highchart>
 
         </div>
 
+
     </div>
+
+</div>
 </div>
 
 

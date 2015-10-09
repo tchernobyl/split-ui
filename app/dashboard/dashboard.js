@@ -9,7 +9,7 @@ angular.module('dashboard', [])
                 templateUrl: 'dashboard/dashboard.html',
                 resolve: {
                     _funnels: [function () {
-                        return funnels;
+                        return funnels_list;
                     }
                     ]
                 },
