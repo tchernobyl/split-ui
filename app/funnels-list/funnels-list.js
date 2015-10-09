@@ -18,6 +18,16 @@ angular.module('funnels_list', [])
                             }
 
                         }
+                    ],
+                    _funnelPaths: ['$stateParams',
+                        function ($stateParams) {
+                            if ($stateParams.id) {
+                                return funnels_paths[$stateParams.id];
+                            } else {
+                                return null;
+                            }
+
+                        }
 
 
 
