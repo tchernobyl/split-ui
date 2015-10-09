@@ -112,10 +112,12 @@ angular.module('funnels_list')
                     $scope.allpaths = [];
 
                     reformatPathsBy($scope.goalOptions.optionSelected, arr)
+                    getPathStatistics(0);
                 };
                 $scope.funnel.pathNumber = 0;
 
                 $scope.highcharts.xAxis.categories = [];
+
                 $scope.getPathStatistics = function ($index) {
                     getPathStatistics($index)
 
@@ -136,8 +138,10 @@ angular.module('funnels_list')
 
                 $scope.changePage = function () {
 
+
                     $scope.listPaths.start = ($scope.listPaths.page - 1) * $scope.listPaths.length;
                     updatehighcharts();
+                    getPathStatistics(0);
 
 
                 };
@@ -163,6 +167,7 @@ angular.module('funnels_list')
                     }
                     if (_funnelPaths) {
                         $scope.allpaths = _funnelPaths;
+                        getPathStatistics(0);
 
                     } else {
                         var ary = {
