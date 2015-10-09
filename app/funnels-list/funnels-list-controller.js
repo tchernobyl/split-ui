@@ -86,7 +86,7 @@ angular.module('funnels_list')
                     yAxis: {
                         min: 0,
                         title: {
-                            text: 'Total fruit consumption'
+                            text: 'Total visitors'
                         }
                     },
 
