@@ -3,6 +3,66 @@ angular.module('funnels_list')
         ['$scope', '$rootScope', '$http', '_funnel', '_funnelPaths',
             function ($scope, $rootScope, $http, _funnel, _funnelPaths) {
 
+                $scope.hig2hcharts = {
+                    options: {
+                        chart: {
+                            type: 'columnrange',
+                            inverted: true
+                        },
+                        tooltip: {
+                            valueSuffix: '%'
+                        },
+
+                        legend: {
+                            enabled: false
+                        },
+
+                        plotOptions: {
+                            columnrange: {
+                                dataLabels: {
+                                    enabled: true,
+                                    formatter: function () {
+                                        return this.y + '%';
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+
+                    title: {
+                        text: 'Success Rate'
+                    },
+
+                    subtitle: {
+                        text: ''
+                    },
+
+                    xAxis: {
+                        categories: []
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: ''
+                        }
+                    },
+
+                    series: [
+                        {
+                            name: '',
+                            data: [
+
+
+                            ]
+                        }
+                    ]
+
+                };
+
+
+                var experiment2 = new Abba.Experiment(6, 15, 40, 0.05);
+                console.log(experiment2.getBaselineProportion());
 
                 $scope.goalOptions = {
                     optionsSearch: ['successRate', 'totalPaidAmount'],
@@ -168,6 +228,7 @@ angular.module('funnels_list')
                     if (_funnelPaths) {
                         $scope.allpaths = _funnelPaths;
                         getPathStatistics(0);
+                        reformatPathsBy($scope.goalOptions.optionSelected, $scope.allpaths)
 
                     } else {
                         var ary = {
@@ -218,6 +279,8 @@ angular.module('funnels_list')
 
 
                     for (var i = 0; i < ary.allPaths.length; i++) {
+
+
                         for (var j = i + 1; j < ary.allPaths.length; j++) {
 
                             if (ary.allPaths[i][field] < ary.allPaths[j][field]) {
@@ -227,9 +290,16 @@ angular.module('funnels_list')
                             }
 
                         }
+                        var total = parseInt(ary.allPaths[i].funnel[0].total)
+                        var conversion = parseInt(ary.allPaths[i].funnel[ary.allPaths[i].funnel.length - 1].success)
+                        var experiment = new Abba.Experiment(0, conversion, total, 0.05);
+                        ary.allPaths[i].statistcs = {
+                            baselineProportion: experiment.getBaselineProportion(),
+                            data: experiment
+                        };
+
                     }
                     $scope.allpaths = ary;
-                    console.log(JSON.stringify($scope.allpaths))
 
 
                 }
@@ -348,6 +418,15 @@ angular.module('funnels_list')
 
                     for (var o = start; o < end; o++) {
 
+                        $scope.hig2hcharts.xAxis.categories.push($scope.allpaths.allPaths[o].id);
+                        $scope.hig2hcharts.series[0].data.push(
+                            [
+                                Math.round($scope.allpaths.allPaths[o].statistcs.baselineProportion.lowerBound * 100000) / 1000,
+                                Math.round($scope.allpaths.allPaths[o].statistcs.baselineProportion.upperBound * 100000) / 1000
+                            ]
+                        );
+
+                        console.log($scope.hig2hcharts);
                         var series_s = {
                             name: $scope.allpaths.allPaths[o].id,
                             data: []
@@ -356,7 +435,7 @@ angular.module('funnels_list')
                             name: $scope.allpaths.allPaths[o].id,
                             data: []
                         };
-                        console.log($scope.allpaths.allPaths[o])
+
                         for (var oo = 0; oo < $scope.allpaths.allPaths[o].funnel.length; oo++) {
                             series_s.data.push($scope.allpaths.allPaths[o].funnel[oo].successRate)
                             series_f.data.push($scope.allpaths.allPaths[o].funnel[oo].failerRate)

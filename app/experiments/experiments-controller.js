@@ -4,52 +4,6 @@ angular.module('experiments')
             function ($scope, $rootScope, $http, _treatment, _funnel, ServerStat) {
 
 
-                $scope.hig1hcharts = {
-
-                    options: {
-                        chart: {
-                            type: 'bubble',
-                            zoomType: 'xy'
-
-                        },
-
-                        title: {
-                            text: 'Highcharts Bubbles'
-                        }
-                    },
-
-
-                    series: [
-                        {
-
-                            name: "Control",
-                            data: [
-                                [57, 86, 31]
-                            ]
-                        },
-                        {
-                            name: "variantA",
-                            data: [
-                                [54, 25, 81]
-                            ]
-                        },
-                        {
-                            name: "variantB",
-                            data: [
-                                [30, 77, 82]
-                            ]
-
-                        },
-                        {
-                            name: "variantc",
-                            data: [
-                                [30, 77, 50]
-                            ]
-
-                        }
-
-                    ]
-                };
                 $scope.hig2hcharts = {
                     options: {
                         chart: {
@@ -86,7 +40,7 @@ angular.module('experiments')
                     },
 
                     xAxis: {
-                        categories: ['Control', 'variantA', 'variantB', 'variantC']
+                        categories: []
                     },
 
                     yAxis: {
@@ -99,10 +53,7 @@ angular.module('experiments')
                         {
                             name: '',
                             data: [
-                                [24.5, 30],
-                                [22, 40],
-                                [40, 54],
-                                [40, 54]
+
 
                             ]
                         }
@@ -141,6 +92,7 @@ angular.module('experiments')
                 };
 
                 function getAsUriParameters(data) {
+                    console.log(data);
                     return Object.keys(data).map(function (k) {
                         if (_.isArray(data[k])) {
                             var keyE = encodeURIComponent(k + '[]');
@@ -167,7 +119,12 @@ angular.module('experiments')
                             var results = experiment.getResults(parseInt(xp.Conversions), parseInt(xp.Visitors));
 
                             $scope.hig2hcharts.xAxis.categories.push(xp.Treatment);
-                            $scope.hig2hcharts.series[0].data.push([Math.round(results.proportion.lowerBound * 100000) / 1000, Math.round(results.proportion.upperBound * 100000) / 1000]);
+                            $scope.hig2hcharts.series[0].data.push(
+                                [
+                                    Math.round(results.proportion.lowerBound * 100000) / 1000,
+                                    Math.round(results.proportion.upperBound * 100000) / 1000
+                                ]
+                            );
 
 
                         }
