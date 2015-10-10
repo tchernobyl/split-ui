@@ -415,7 +415,13 @@ angular.module('funnels_list')
                         end = $scope.allpaths.allPaths.length;
                     }
 
+                    $scope.hig2hcharts.xAxis.categories = [];
+                    $scope.hig2hcharts.series[0] = {
+                        name: '',
+                        data: [
 
+                        ]
+                    };
                     for (var o = start; o < end; o++) {
 
                         $scope.hig2hcharts.xAxis.categories.push($scope.allpaths.allPaths[o].id);
